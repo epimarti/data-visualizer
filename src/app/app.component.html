@@ -1,0 +1,7 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<select #user (change)="auth.setUser(user.value)">
+  <option *ngFor="let user of auth.getUsers(); index as i" value="{{i}}">
+    {{user}}
+  </option>
+</select>
+<button (click)="getInfo()">Info</button>
