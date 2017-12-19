@@ -34,33 +34,38 @@ export class DataService {
     });
   }
   getAudience(from: Date, to: Date, aggregate?: string) {
-    return this.http.post('http://localhost:3000/audience',
-    'session_token=' + this.auth.getUserToken() + '&from=' + from.getTime() + '&to=' + to.getTime(),
-    httpOptions)
-    .pipe(tap(r => console.log(r)));
+    return this.auth.getUserToken().flatMap(auth => {
+      return this.http.post('http://localhost:3000/audience',
+      'session_token=' + auth.session_token + '&from=' + from.getTime() + '&to=' + to.getTime(),
+      httpOptions);
+    });
   }
   getStreams() {
-    return this.http.post('http://localhost:3000/streams',
-    'session_token=' + this.auth.getUserToken(),
-    httpOptions)
-    .pipe(tap(r => console.log(r)));
+    return this.auth.getUserToken().flatMap(auth => {
+      return this.http.post('http://localhost:3000/streams',
+      'session_token=' + auth.session_token,
+      httpOptions);
+    });
   }
   getCountries() {
-    return this.http.post('http://localhost:3000/countries',
-    'session_token=' + this.auth.getUserToken(),
-    httpOptions)
-    .pipe(tap(r => console.log(r)));
+    return this.auth.getUserToken().flatMap(auth => {
+      return this.http.post('http://localhost:3000/countries',
+      'session_token=' + auth.session_token,
+      httpOptions);
+    });
   }
   getIsps() {
-    return this.http.post('http://localhost:3000/isps',
-    'session_token=' + this.auth.getUserToken(),
-    httpOptions)
-    .pipe(tap(r => console.log(r)));
+    return this.auth.getUserToken().flatMap(auth => {
+      return this.http.post('http://localhost:3000/isps',
+      'session_token=' + auth.session_token,
+      httpOptions);
+    });
   }
   getPlatforms() {
-    return this.http.post('http://localhost:3000/platforms',
-    'session_token=' + this.auth.getUserToken(),
-    httpOptions)
-    .pipe(tap(r => console.log(r)));
+    return this.auth.getUserToken().flatMap(auth => {
+      return this.http.post('http://localhost:3000/platforms',
+      'session_token=' + auth.session_token,
+      httpOptions);
+    });
   }
 }

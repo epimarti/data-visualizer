@@ -36,7 +36,7 @@ export class AuthService {
 
   getUserToken(): Observable<AuthResponse> {
     if (this.token) {
-      let t = new AuthResponse();
+      const t = new AuthResponse();
       t.session_token = this.token;
       return of(t);
     }

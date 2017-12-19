@@ -7,7 +7,7 @@ import { Subject } from 'rxjs/Subject';
 
 import { AuthService } from './services/auth.service';
 import { DataService } from './services/data.service';
-import { DataRatePipe } from './pipes/data-rate.pipe';
+import { BitsPipe } from './pipes/bits.pipe';
 
 @Component({
   selector: 'app-root',
@@ -16,11 +16,13 @@ import { DataRatePipe } from './pipes/data-rate.pipe';
 })
 export class AppComponent implements OnInit {
   dataset: any[];
+  _self: AppComponent;
 
   constructor(private auth: AuthService,
     private data: DataService,
-    private dataRate: DataRatePipe) {
+    private bits: BitsPipe) {
       this.dataset = [];
+      this._self = this;
     }
 
     ngOnInit() {
@@ -37,6 +39,11 @@ export class AppComponent implements OnInit {
           {name: 'Cdn', series: bw.cdn.map((x) => ({ name: new Date(x[0]), value: x[1] }) )}
         ];
       });
+    }
+
+    format(value) {
+      const pipe = new BitsPipe();
+      return pipe.transform(value, 2, 'speed');
     }
 
     switchUser(user: number) {

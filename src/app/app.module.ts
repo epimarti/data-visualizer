@@ -9,12 +9,12 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { AppComponent } from './app.component';
 import { AuthService} from './services/auth.service';
 import { DataService} from './services/data.service';
-import { DataRatePipe } from './pipes/data-rate.pipe';
+import { BitsPipe } from './pipes/bits.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
-    DataRatePipe
+    BitsPipe
   ],
   imports: [
     BrowserModule,
@@ -22,7 +22,7 @@ import { DataRatePipe } from './pipes/data-rate.pipe';
     HttpClientModule,
     NgxChartsModule
   ],
-  providers: [ AuthService, DataService, DataRatePipe, JsonPipe],
+  providers: [ AuthService, DataService, BitsPipe, JsonPipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
