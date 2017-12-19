@@ -36,7 +36,7 @@ export class AppComponent implements OnInit {
       .subscribe(bw => {
         this.dataset = [
           {name: 'HTTP', series: bw.cdn.map((x) => ({ name: new Date(x[0]), value: x[1] }) )},
-          {name: 'P2P', series: bw.p2p.map((x, i) => ({ name: new Date(x[0]), value: x[1] }) )}
+          {name: 'P2P', series: bw.p2p.map((x) => ({ name: new Date(x[0]), value: x[1] }) )}
         ];
       });
     }

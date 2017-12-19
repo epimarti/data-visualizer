@@ -22,8 +22,9 @@ export class DataService {
   constructor(private auth: AuthService, private http: HttpClient) { }
 
   getInfo() {
-    return this.http.post('http://localhost:3000/myinfo', 'session_token=' + this.auth.getUserToken(), httpOptions)
-    .pipe(tap(r => console.log(r)));
+    return this.auth.getUserToken().flatMap(auth => {
+      return this.http.post('http://localhost:3000/myinfo', 'session_token=' + auth.session_token, httpOptions);
+    });
   }
 
   getBandwidth(from: Date, to: Date, aggregate?: string): Observable<Bandwith> {
