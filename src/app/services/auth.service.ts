@@ -11,7 +11,6 @@ const httpOptions = {
 };
 
 class AuthResponse {
-  constructor(session_token: string) { }
   session_token: string;
 }
 
@@ -37,7 +36,9 @@ export class AuthService {
 
   getUserToken(): Observable<AuthResponse> {
     if (this.token) {
-      return of(new AuthResponse(this.token));
+      let t = new AuthResponse();
+      t.session_token = this.token;
+      return of(t);
     }
     return this.getToken()
     .pipe(tap(respone => this.token = respone.session_token));
@@ -69,7 +70,7 @@ export class AuthService {
     httpOptions)
     .pipe(
       tap(r => console.log(r)),
-      catchError(this.handleError('getToken', new AuthResponse(''))));
+      catchError(this.handleError('getToken', new AuthResponse())));
     }
 
     private handleError<T> (operation = 'operation', result?: T) {

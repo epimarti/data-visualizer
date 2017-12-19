@@ -4,7 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { catchError, map, tap } from 'rxjs/operators';
-import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/mergeMap';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' })
@@ -27,7 +27,7 @@ export class DataService {
   }
 
   getBandwidth(from: Date, to: Date, aggregate?: string): Observable<Bandwith> {
-    return this.auth.getUserToken().switchMap(auth => {
+    return this.auth.getUserToken().flatMap(auth => {
       return this.http.post<Bandwith>('http://localhost:3000/bandwidth',
       'session_token=' + auth.session_token + '&from=' + from.getTime() + '&to=' + to.getTime(),
       httpOptions);
