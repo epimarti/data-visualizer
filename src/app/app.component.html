@@ -1,8 +1,17 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<select #user (change)="auth.setUser(user.value)">
+<select #user (change)="switchUser(user.value)">
   <option *ngFor="let user of auth.getUsers(); index as i" value="{{i}}">
     {{user}}
   </option>
 </select>
 <button (click)="getInfo()">Info</button>
-<ngx-charts-area-chart [results]="dataset" [view]="[700, 300]" [xAxis]=true [yAxis]=true [timeline]=true></ngx-charts-area-chart>
+<ngx-charts-area-chart [results]="dataset"
+                       [view]="[700, 300]"
+                       [xAxis]=true
+                       [yAxis]=true
+                       [timeline]=true
+                       [yAxisTickFormatting]="dataRate.transform">
+  <ng-template #seriesTooltipTemplate let-model="model">
+    <span>{{ model | json }}</span>
+  </ng-template>
+</ngx-charts-area-chart>

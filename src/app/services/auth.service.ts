@@ -4,12 +4,14 @@ import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { Subject } from 'rxjs/Subject';
 import { catchError, map, tap } from 'rxjs/operators';
+import 'rxjs/add/operator/switchMap';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' })
 };
 
 class AuthResponse {
+  constructor(session_token: string) { }
   session_token: string;
 }
 
@@ -22,6 +24,7 @@ export class AuthService {
 
   constructor(private http: HttpClient) {
     this.currentUser = 0;
+    this.token = null;
   }
 
   getUsers() {
@@ -32,31 +35,31 @@ export class AuthService {
     return this.users[this.currentUser];
   }
 
-  getUserToken(): Observable<string> {
-    if (this.token){
-      return of(this.token);
+  getUserToken(): Observable<AuthResponse> {
+    if (this.token) {
+      return of(new AuthResponse(this.token));
     }
     return this.getToken()
-    .pipe(tap(respone => this.token = respone.session_token),
-    map(response => response.session_token));
+    .pipe(tap(respone => this.token = respone.session_token));
   }
 
-  setUser (index: number) {
-    this.logout().subscribe(_ => {
+  setUser (index: number): Observable<AuthResponse> {
+    return this.logout().switchMap(_ => {
       this.currentUser = index;
-      this.getToken()
-      .subscribe(response => this.token = response.session_token)
+      return this.getToken()
+      .pipe(tap(response =>
+        this.token = response.session_token));
     });
   }
 
   private logout(): Observable<any> {
-    if (this.token){
+    if (this.token) {
       return this.http
       .post('http://localhost:3000/logout',
       'session_token=' + this.token,
       httpOptions);
     }
-    return of()
+    return of();
   }
 
   private getToken(): Observable<AuthResponse> {
@@ -66,19 +69,15 @@ export class AuthService {
     httpOptions)
     .pipe(
       tap(r => console.log(r)),
-      catchError(this.handleError('getToken', new AuthResponse())));
+      catchError(this.handleError('getToken', new AuthResponse(''))));
     }
 
     private handleError<T> (operation = 'operation', result?: T) {
       return (error: any): Observable<T> => {
 
-        // TODO: send the error to remote logging infrastructure
-        console.error(error); // log to console instead
-
-        // TODO: better job of transforming error for user consumption
+        console.error(error);
         console.log(`${operation} failed: ${error.message}`);
 
-        // Let the app keep running by returning an empty result.
         return of(result as T);
       };
     }

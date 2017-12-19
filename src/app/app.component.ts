@@ -1,9 +1,13 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Component, OnInit } from '@angular/core';
-import { AuthService} from './services/auth.service';
-import { DataService} from './services/data.service';
+import { JsonPipe } from '@angular/common';
+
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { Subject } from 'rxjs/Subject';
-import { NgxChartsModule } from '@swimlane/ngx-charts'
+
+import { AuthService } from './services/auth.service';
+import { DataService } from './services/data.service';
+import { DataRatePipe } from './pipes/data-rate.pipe';
 
 @Component({
   selector: 'app-root',
@@ -13,21 +17,33 @@ import { NgxChartsModule } from '@swimlane/ngx-charts'
 export class AppComponent implements OnInit {
   dataset: any[];
 
-  constructor(private auth: AuthService, private data: DataService) {
-    this.dataset = [];
-  }
+  constructor(private auth: AuthService,
+    private data: DataService,
+    private dataRate: DataRatePipe) {
+      this.dataset = [];
+    }
 
-  ngOnInit() {
-    this.data.getBandwidth(new Date(0), new Date())
-    .subscribe(bw => {
-      this.dataset= [
-        {name: 'P2p', series: bw.p2p.map((x) => { return { name: new Date(x[0]), value: x[1]}; } )},
-        {name: 'Cdn', series: bw.cdn.map((x) => { return { name: new Date(x[0]), value: x[1]}; } )}
-    ];
-    })
-  }
+    ngOnInit() {
+      this.initData();
+    }
 
-  getInfo() {
-    this.data.getInfo().subscribe(r => r = r);
+    initData() {
+      this.dataset = [];
+
+      this.data.getBandwidth(new Date(0), new Date())
+      .subscribe(bw => {
+        this.dataset = [
+          {name: 'P2p', series: bw.p2p.map((x) => ({ name: new Date(x[0]), value: x[1] }) )},
+          {name: 'Cdn', series: bw.cdn.map((x) => ({ name: new Date(x[0]), value: x[1] }) )}
+        ];
+      });
+    }
+
+    switchUser(user: number) {
+      this.auth.setUser(user).subscribe(_ => this.initData());
+    }
+
+    getInfo() {
+      this.data.getInfo().subscribe(r => r = r);
+    }
   }
-}
