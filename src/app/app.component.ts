@@ -35,8 +35,8 @@ export class AppComponent implements OnInit {
       this.data.getBandwidth(new Date(0), new Date())
       .subscribe(bw => {
         this.dataset = [
-          {name: 'P2p', series: bw.p2p.map((x) => ({ name: new Date(x[0]), value: x[1] }) )},
-          {name: 'Cdn', series: bw.cdn.map((x) => ({ name: new Date(x[0]), value: x[1] }) )}
+          {name: 'HTTP', series: bw.cdn.map((x) => ({ name: new Date(x[0]), value: x[1] }) )},
+          {name: 'P2P', series: bw.p2p.map((x, i) => ({ name: new Date(x[0]), value: x[1] }) )}
         ];
       });
     }

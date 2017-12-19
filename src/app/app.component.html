@@ -5,13 +5,32 @@
   </option>
 </select>
 <button (click)="getInfo()">Info</button>
-<ngx-charts-area-chart [results]="dataset"
-                       [view]="[700, 300]"
-                       [xAxis]=true
-                       [yAxis]=true
-                       [timeline]=true
-                       [yAxisTickFormatting]="format">
-  <ng-template #seriesTooltipTemplate let-model="model">
-    <span>{{ model | json }}</span>
-  </ng-template>
-</ngx-charts-area-chart>
+<ngx-charts-area-chart-stacked [results]="dataset"
+[view]="[700, 300]"
+[xAxis]=true
+[yAxis]=true
+[timeline]=true
+[yAxisTickFormatting]="format">
+<ng-template #seriesTooltipTemplate let-model="model">
+  <h3>{{ model[0].name | date:'fullDate' }}</h3>
+  <div>
+    {{ model[1].series }}: <span>{{ model[1].value | bits:2:'speed' }}</span>
+  </div>
+  <div>
+    {{ model[0].series }}: <span>{{ model[0].value | bits:2:'speed' }}</span>
+  </div>
+  <br />
+  <div>
+    Total: <span>{{ model[0].value + model[1].value | bits:2:'speed' }}</span>
+  </div>
+  <div>
+    Spike Reduction: <span>{{ (model[1].value / (model[0].value + model[1].value)) | percent }}</span>
+  </div>
+</ng-template>
+<ng-template #tooltipTemplate let-model="model">
+  <h3>{{ model.name | date:'fullDate' }}</h3>
+  <div>
+    {{ model.series }}: <span>{{ model.value | bits:2:'speed' }}</span>
+  </div>
+</ng-template>
+</ngx-charts-area-chart-stacked>
