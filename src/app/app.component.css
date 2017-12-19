@@ -1,0 +1,6 @@
+.chart-container {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  height: 80%;
+}

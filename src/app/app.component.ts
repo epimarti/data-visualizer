@@ -17,7 +17,14 @@ import { BitsPipe } from './pipes/bits.pipe';
 export class AppComponent implements OnInit {
   dataset: any[];
   _self: AppComponent;
-
+  scheme =     {
+          name: 'sr',
+          selectable: true,
+          group: 'Ordinal',
+          domain: [
+              '#B2125C', '#4FBCF2'
+          ]
+      };
   constructor(private auth: AuthService,
     private data: DataService,
     private bits: BitsPipe) {

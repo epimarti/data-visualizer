@@ -5,11 +5,12 @@
   </option>
 </select>
 <button (click)="getInfo()">Info</button>
+<div class="chart-container">
 <ngx-charts-area-chart-stacked [results]="dataset"
-[view]="[1500, 300]"
 [xAxis]=true
 [yAxis]=true
 [timeline]=true
+[scheme]=scheme
 [yAxisTickFormatting]="format">
 <ng-template #seriesTooltipTemplate let-model="model">
   <h3>{{ model[0].name | date:'fullDate' }}</h3>
@@ -34,3 +35,4 @@
   </div>
 </ng-template>
 </ngx-charts-area-chart-stacked>
+</div>
