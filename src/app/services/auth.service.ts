@@ -3,8 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { Subject } from 'rxjs/Subject';
-import { catchError, map, tap } from 'rxjs/operators';
-import 'rxjs/add/operator/switchMap';
+import { catchError, flatMap, tap } from 'rxjs/operators';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' })
@@ -40,16 +39,13 @@ export class AuthService {
       t.session_token = this.token;
       return of(t);
     }
-    return this.getToken()
-    .pipe(tap(respone => this.token = respone.session_token));
+    return this.getToken();
   }
 
   setUser (index: number): Observable<AuthResponse> {
-    return this.logout().switchMap(_ => {
+    return this.logout().flatMap(_ => {
       this.currentUser = index;
-      return this.getToken()
-      .pipe(tap(response =>
-        this.token = response.session_token));
+      return this.getToken();
     });
   }
 
@@ -69,14 +65,13 @@ export class AuthService {
     'identifiant=' + this.users[this.currentUser] + '&password=' + this.pwds[this.currentUser],
     httpOptions)
     .pipe(
-      tap(r => console.log(r)),
+      tap(respone => this.token = respone.session_token),
       catchError(this.handleError('getToken', new AuthResponse())));
     }
 
     private handleError<T> (operation = 'operation', result?: T) {
       return (error: any): Observable<T> => {
 
-        console.error(error);
         console.log(`${operation} failed: ${error.message}`);
 
         return of(result as T);
