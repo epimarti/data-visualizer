@@ -17,14 +17,21 @@ import { BitsPipe } from './pipes/bits.pipe';
 export class AppComponent implements OnInit {
   dataset: any[];
   audience: any[];
-  scheme =     {
-    name: 'sr',
+  bwScheme =     {
+    name: 'bwScheme',
     selectable: true,
     group: 'Ordinal',
     domain: [
       '#B2125C', '#4FBCF2'
     ]
   };
+  audienceScheme =     {
+    name: 'audienceScheme',
+    selectable: true,
+    group: 'Ordinal',
+    domain: [ '#E65F00', '#E65F00']
+  };
+
   constructor(private auth: AuthService,
     private data: DataService,
     private bits: BitsPipe) {
@@ -67,7 +74,10 @@ export class AppComponent implements OnInit {
     private getAudience(token: string) {
       this.data.getAudience(token, new Date(0), new Date())
       .subscribe(audience => {
-        this.audience = audience.audience.map(x => ({ name: audience[0], value: audience[1] }));
+        this.audience = [{
+          name: 'Audience',
+          series: audience.audience.map(x => ({ name: new Date(x[0]), value: x[1] }))
+        }];
       });
     }
 

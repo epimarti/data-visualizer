@@ -10,7 +10,7 @@
 [xAxis]=true
 [yAxis]=true
 [timeline]=true
-[scheme]=scheme
+[scheme]=bwScheme
 [yAxisTickFormatting]="format">
 <ng-template #seriesTooltipTemplate let-model="model">
   <h3>{{ model[0].name | date:'fullDate' }}</h3>
@@ -35,4 +35,5 @@
   </div>
 </ng-template>
 </ngx-charts-area-chart-stacked>
+<ngx-charts-line-chart [scheme]=audienceScheme [results]="audience" [xAxis]=true [yAxis]=true></ngx-charts-line-chart>
 </div>
