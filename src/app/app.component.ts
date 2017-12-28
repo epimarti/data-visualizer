@@ -49,6 +49,10 @@ export class AppComponent implements OnInit {
       this.auth.getUserToken().subscribe(session => {
         this.getBandwidth(session.session_token);
         this.getAudience(session.session_token);
+        this.data.getIsps(session.session_token).subscribe(x => console.log(x));
+        this.data.getCountries(session.session_token).subscribe(x => console.log(x));
+        this.data.getPlatforms(session.session_token).subscribe(x => console.log(x));
+        this.data.getStreams(session.session_token).subscribe(x => console.log(x));
       });
     }
 
