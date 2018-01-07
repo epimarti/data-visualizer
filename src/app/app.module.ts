@@ -10,11 +10,13 @@ import { AppComponent } from './app.component';
 import { AuthService} from './services/auth.service';
 import { DataService} from './services/data.service';
 import { BitsPipe } from './pipes/bits.pipe';
+import { PlatformsComponent } from './platforms/platforms.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    BitsPipe
+    BitsPipe,
+    PlatformsComponent
   ],
   imports: [
     BrowserModule,

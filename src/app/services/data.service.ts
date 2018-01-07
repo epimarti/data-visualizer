@@ -56,7 +56,7 @@ export class DataService {
   constructor(private http: HttpClient) { }
 
   getInfo(token: string) {
-    return this.http.post('/myinfo', 'session_token=' + token, httpOptions);
+    return this.post('/myinfo', 'session_token=' + token);
   }
 
   getBandwidth(token: string, from: Date, to: Date, aggregate?: string): Observable<Bandwith> {

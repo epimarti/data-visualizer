@@ -16,13 +16,14 @@ import { BitsPipe } from './pipes/bits.pipe';
 })
 export class AppComponent implements OnInit {
   dataset: any[];
+  platforms: any[];
   audience: any[];
   bwScheme =     {
     name: 'bwScheme',
     selectable: true,
     group: 'Ordinal',
     domain: [
-      '#B2125C', '#4FBCF2'
+      '#B2125C', '#4FBCF2', '#E65F00', '#511883', '#458741'
     ]
   };
   audienceScheme =     {
@@ -37,6 +38,7 @@ export class AppComponent implements OnInit {
     private bits: BitsPipe) {
       this.dataset = [];
       this.audience = [];
+      this.platforms = [];
     }
 
     ngOnInit() {
@@ -45,13 +47,14 @@ export class AppComponent implements OnInit {
 
     initData() {
       this.dataset = [];
+      this.platforms = [];
 
       this.auth.getUserToken().subscribe(session => {
         this.getBandwidth(session.session_token);
         this.getAudience(session.session_token);
+        this.getPlatforms(session.session_token);
         this.data.getIsps(session.session_token).subscribe(x => console.log(x));
         this.data.getCountries(session.session_token).subscribe(x => console.log(x));
-        this.data.getPlatforms(session.session_token).subscribe(x => console.log(x));
         this.data.getStreams(session.session_token).subscribe(x => console.log(x));
       });
     }
@@ -63,6 +66,28 @@ export class AppComponent implements OnInit {
 
     switchUser(user: number) {
       this.auth.setUser(user).subscribe(_ => this.initData());
+    }
+
+    private getPlatforms(token: string) {
+      this.data.getPlatforms(token).subscribe(x => {
+        this.platforms = [
+          {name: x[0].platform, series: this.formatPlatformData(x[0])},
+          {name: x[1].platform, series: this.formatPlatformData(x[1])},
+          {name: x[2].platform, series: this.formatPlatformData(x[2])},
+          {name: x[3].platform, series: this.formatPlatformData(x[3])},
+          {name: x[4].platform, series: this.formatPlatformData(x[4])},
+        ];
+        console.log(this.platforms);
+      });
+    }
+
+    private formatPlatformData(data) {
+      return [
+        {name: 'max_viewers', value: data.max_viewers },
+        {name: 'p2p', value: data.p2p },
+        {name: 'cdn', value: data.cdn },
+        {name: 'upload', value: data.upload },
+      ]
     }
 
     private getBandwidth(token: string) {

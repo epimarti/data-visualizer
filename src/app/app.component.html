@@ -1,4 +1,3 @@
-<!--The content below is only a placeholder and can be replaced.-->
 <select #user (change)="switchUser(user.value)">
   <option *ngFor="let user of auth.getUsers(); index as i" value="{{i}}">
     {{user}}
@@ -36,4 +35,6 @@
 </ng-template>
 </ngx-charts-area-chart-stacked>
 <ngx-charts-line-chart [scheme]=audienceScheme [results]="audience" [xAxis]=true [yAxis]=true></ngx-charts-line-chart>
+<app-platforms [view]="[300, 300]" [platformsData]="platforms" [scheme]="bwScheme" [legend]="true">
+</app-platforms>
 </div>

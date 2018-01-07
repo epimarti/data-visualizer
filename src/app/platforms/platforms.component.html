@@ -1,0 +1,32 @@
+<ngx-charts-chart
+  [view]="[width, height]"
+  [showLegend]="legend"
+  [legendOptions]="legendOptions"
+  [activeEntries]="activeEntries"
+  [animations]="animations"
+  (legendLabelActivate)="onActivate($event)"
+  (legendLabelDeactivate)="onDeactivate($event)"
+  (legendLabelClick)="onClick($event)">
+  <svg:g [attr.transform]="translation" class="pie-chart chart">
+    <svg:g *ngFor="let data of formatedData; index as i">
+      <svg:g ngx-charts-pie-series
+        [colors]="colors"
+        [showLabels]="labels"
+        [labelFormatting]="labelFormatting"
+        [series]="data"
+        [activeEntries]="activeEntries"
+        [innerRadius]="innerRadiusFor(i)"
+        [outerRadius]="outerRadiusFor(i)"
+        [explodeSlices]="explodeSlices"
+        [gradient]="gradient"
+        [animations]="animations"
+        [tooltipDisabled]="tooltipDisabled"
+        [tooltipTemplate]="tooltipTemplate"
+        [tooltipText]="tooltipText"
+        (select)="onClick($event)"
+        (activate)="onActivate($event)"
+        (deactivate)="onDeactivate($event)"
+      />
+    </svg:g>
+  </svg:g>
+</ngx-charts-chart>
