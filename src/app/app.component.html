@@ -1,40 +1,43 @@
-<select #user (change)="switchUser(user.value)">
-  <option *ngFor="let user of auth.getUsers(); index as i" value="{{i}}">
-    {{user}}
-  </option>
-</select>
-<button (click)="getInfo()">Info</button>
-<div class="chart-container">
-<ngx-charts-area-chart-stacked [results]="dataset"
-[xAxis]=true
-[yAxis]=true
-[timeline]=true
-[scheme]=bwScheme
-[yAxisTickFormatting]="format">
-<ng-template #seriesTooltipTemplate let-model="model">
-  <h3>{{ model[0].name | date:'fullDate' }}</h3>
-  <div>
-    {{ model[1].series }}: <span>{{ model[1].value | bits:2:'speed' }}</span>
+<div class="root-container">
+  <app-header (switchedUser)="initData()"></app-header>
+  <div class="app-container">
+    <div class="platforms-container">
+      <app-platforms [platformsData]="platforms" [scheme]="bwScheme" [legend]="true"></app-platforms>
+    </div>
+    <button class="right" (click)="getInfo()">Info</button>
+    <div class="bandwidth-container">
+      <ngx-charts-area-chart-stacked [results]="dataset"
+        [xAxis]=true
+        [yAxis]=true
+        [timeline]=true
+        [scheme]=bwScheme
+        [yAxisTickFormatting]="format">
+        <ng-template #seriesTooltipTemplate let-model="model">
+          <h3>{{ model[0].name | date:'fullDate' }}</h3>
+          <div>
+            {{ model[1].series }}: <span>{{ model[1].value | bits:2:'speed' }}</span>
+          </div>
+          <div>
+            {{ model[0].series }}: <span>{{ model[0].value | bits:2:'speed' }}</span>
+          </div>
+          <br />
+          <div>
+            Total: <span>{{ model[0].value + model[1].value | bits:2:'speed' }}</span>
+          </div>
+          <div>
+            Spike Reduction: <span>{{ (model[1].value / (model[0].value + model[1].value)) | percent }}</span>
+          </div>
+        </ng-template>
+        <ng-template #tooltipTemplate let-model="model">
+          <h3>{{ model.name | date:'fullDate' }}</h3>
+          <div>
+            {{ model.series }}: <span>{{ model.value | bits:2:'speed' }}</span>
+          </div>
+        </ng-template>
+      </ngx-charts-area-chart-stacked>
+    </div>
+    <div class="audience-container">
+      <ngx-charts-line-chart [scheme]=audienceScheme [results]="audience" [xAxis]=true [yAxis]=true></ngx-charts-line-chart>
+    </div>
   </div>
-  <div>
-    {{ model[0].series }}: <span>{{ model[0].value | bits:2:'speed' }}</span>
-  </div>
-  <br />
-  <div>
-    Total: <span>{{ model[0].value + model[1].value | bits:2:'speed' }}</span>
-  </div>
-  <div>
-    Spike Reduction: <span>{{ (model[1].value / (model[0].value + model[1].value)) | percent }}</span>
-  </div>
-</ng-template>
-<ng-template #tooltipTemplate let-model="model">
-  <h3>{{ model.name | date:'fullDate' }}</h3>
-  <div>
-    {{ model.series }}: <span>{{ model.value | bits:2:'speed' }}</span>
-  </div>
-</ng-template>
-</ngx-charts-area-chart-stacked>
-<ngx-charts-line-chart [scheme]=audienceScheme [results]="audience" [xAxis]=true [yAxis]=true></ngx-charts-line-chart>
-<app-platforms [view]="[300, 300]" [platformsData]="platforms" [scheme]="bwScheme" [legend]="true">
-</app-platforms>
 </div>

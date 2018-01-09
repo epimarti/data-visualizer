@@ -1,0 +1,26 @@
+.header {
+  position: absolute;
+  height: 50px;
+  left: 0;
+  right: 0;
+  padding: 0 10px;
+
+  background-color: #3AA0D3;
+}
+
+.header-title {
+  color: white;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 2.5em;
+  font-weight: 700;
+}
+
+.login{
+  padding: 10px 0;
+}
+
+.login select {
+  height: 30px;
+  background-color: white;
+  border-radius: 5px;
+}

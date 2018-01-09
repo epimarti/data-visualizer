@@ -11,12 +11,14 @@ import { AuthService} from './services/auth.service';
 import { DataService} from './services/data.service';
 import { BitsPipe } from './pipes/bits.pipe';
 import { PlatformsComponent } from './platforms/platforms.component';
+import { HeaderComponent } from './header/header.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     BitsPipe,
-    PlatformsComponent
+    PlatformsComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,

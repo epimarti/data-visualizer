@@ -64,10 +64,6 @@ export class AppComponent implements OnInit {
       return pipe.transform(value, 2, 'speed');
     }
 
-    switchUser(user: number) {
-      this.auth.setUser(user).subscribe(_ => this.initData());
-    }
-
     private getPlatforms(token: string) {
       this.data.getPlatforms(token).subscribe(x => {
         this.platforms = [
@@ -87,7 +83,7 @@ export class AppComponent implements OnInit {
         {name: 'p2p', value: data.p2p },
         {name: 'cdn', value: data.cdn },
         {name: 'upload', value: data.upload },
-      ]
+      ];
     }
 
     private getBandwidth(token: string) {

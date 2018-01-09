@@ -1,0 +1,10 @@
+<div class="header">
+  <span class="header-title">Data Visualizer</span>
+  <div class="right login">
+    <select #user (change)="switchUser(user.value)">
+      <option *ngFor="let user of auth.getUsers(); index as i" value="{{i}}">
+        {{user}}
+      </option>
+    </select>
+  </div>
+</div>
