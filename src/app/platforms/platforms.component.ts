@@ -78,7 +78,6 @@ export class PlatformsComponent extends BaseChartComponent {
       showYLabel: this.showYAxisLabel,
       showLegend: this.legend,
       legendType: this.schemeType,
-      columns: 10
     });
 
     const xOffset = this.margin[3] + this.dims.width / 2;
